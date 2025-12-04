@@ -31,9 +31,9 @@ const Dashboard = () => {
     } else {
       document.body.style.overflowY = "";
     }
-    return ()=> {
-        document.body.style.overflowY = "";
-    }
+    return () => {
+      document.body.style.overflowY = "";
+    };
   }, [modalShowing]);
 
   const filteredMessages = useMemo(() => {
@@ -161,11 +161,18 @@ const Dashboard = () => {
   if (!loading && user)
     return (
       <div className="p-4">
-        <div className="text-end pb-3 fs-2">
-          <i
-            onClick={() => navigate("/setting")}
-            className="fa-solid fa-gear text-secondary cursor"
-          ></i>
+        <div className="d-flex pb-4 mt-2 fs-2 justify-content-between">
+          <p className="f-14 fw-bolder">Whisper<span className="text-snow">In</span></p>
+          <span className="d-flex gap-3">
+            <i
+              onClick={() => navigate("/")}
+              className="fa-solid fa-home text-secondary cursor"
+            ></i>
+            <i
+              onClick={() => navigate("/setting")}
+              className="fa-solid fa-gear text-secondary cursor"
+            ></i>
+          </span>
         </div>
 
         <p className="fw-bold mb-1 f-14">
@@ -192,8 +199,14 @@ const Dashboard = () => {
             <Socials />
           </div>
 
-          <p className="text-secondary mt-3 mb-1 f-10 fw-bolder">{userData?.email.toLowerCase()}</p>
-          {userData.username && <p className="text-secondary f-10 fw-bolder">Display name - {userData?.username.toLowerCase()}</p>}
+          <p className="text-secondary mt-3 mb-1 f-10 fw-bolder">
+            {userData?.email.toLowerCase()}
+          </p>
+          {userData.username && (
+            <p className="text-secondary f-10 fw-bolder">
+              Display name - {userData?.username.toLowerCase()}
+            </p>
+          )}
 
           <button
             onClick={() => navigate("/setting")}

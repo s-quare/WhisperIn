@@ -163,9 +163,9 @@ const Settings = () => {
 
   if (!loading && user && userData)
     return (
-      <div className="p-4 bg-blueish" style={{ height: "100vh" }}>
+      <div className="p-4 bg-blueish" style={{ height: "100svh" }}>
         <div
-          className="p-4 h-100 rounded-4"
+          className="p-4 pb-3 h-100 rounded-4"
           style={{
             background: "rgba(0,0,0,0.2)",
             overflowY: "scroll",
@@ -174,7 +174,7 @@ const Settings = () => {
         >
           <p
             onClick={() => navigate("/dashboard")}
-            className="mb-5 pb-3 italics cursor"
+            className="mb-4 text-secondary fw-bold italics cursor"
           >
             <i className="fa-solid fa-angle-left"></i> dashboard
           </p>
@@ -323,7 +323,7 @@ const Settings = () => {
             </button>
           </div>
 
-          <p className="mt-5 pt-4 fw-bold text-center">
+          <p className="mt-5 mb-0 pt-4 fw-bold text-center">
             Whisper<span className="text-snow">In</span>
           </p>
         </div>

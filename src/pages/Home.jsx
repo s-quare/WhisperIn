@@ -110,7 +110,7 @@ const Home = () => {
           <button
             onClick={handleSearchSubmit}
             className="btn-snow px-4"
-            disabled={searchInput === ''}
+            disabled={searchInput === ""}
           >
             Go
           </button>
@@ -135,25 +135,26 @@ const Home = () => {
         </p>
         <p className="fw-bold mt-5 text-snow ps-4">How it works</p>
 
-        <div className="flex-scroll max-600 mx-auto">
+        <div className="flex-scroll max-600 text-center mx-auto">
           <p className="shadow-snow rounded-4 p-3">
             <b className="f-14 d-block mb-3 text-center">
               {" "}
-              <i className="fa-solid fa-user-plus me-2 f-12"></i> Create{" "}
+              <i className="fa-solid fa-user-plus me-2 f-12"></i> <br /> Create{" "}
             </b>
             Sign up in seconds and get your unique link
           </p>
           <p className="shadow-snow rounded-4 p-3">
             <b className="f-14 d-block mb-3 text-center">
               {" "}
-              <i className="fa-solid fa-share-alt me-2 f-12"></i> Share
+              <i className="fa-solid fa-share-alt me-2 f-12"></i> <br /> Share
             </b>
             Add to Instagram, Twitter, Tiktok bios, or share directly
           </p>
           <p className="shadow-snow rounded-4 p-3">
             <b className="f-14 d-block mb-3 text-center">
               {" "}
-              <i className="fa-solid fa-comment-dots me-2 f-12"></i> Receive
+              <i className="fa-solid fa-comment-dots me-2 f-12"></i> <br />{" "}
+              Receive
             </b>
             Check your private dashboard for recent anonymous messages
           </p>
