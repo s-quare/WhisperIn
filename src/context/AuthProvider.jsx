@@ -10,6 +10,8 @@ import {
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
+  reauthenticateWithCredential,
+  updatePassword,
 } from "firebase/auth";
 import {
   collection,
@@ -21,6 +23,7 @@ import {
   setDoc,
   where,
 } from "firebase/firestore";
+import { EmailAuthProvider } from "firebase/auth/web-extension";
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
@@ -150,13 +153,46 @@ export function AuthProvider({ children }) {
       textarea.select();
       const success = document.execCommand("copy");
       document.body.removeChild(textarea);
-      if(success) {
-        showToast('Copied to clipboard');
+      if (success) {
+        showToast("Copied to clipboard");
       } else {
-        showToast('Failed')
+        showToast("Failed");
       }
     } catch {
       showToast("Copy failed");
+    }
+  };
+
+  const changePassword = async (currentPassword, newPassword) => {
+    try {
+      const user = auth.currentUser;
+
+      if (!user || !user.email) {
+        return { success: false, error: "No authenticated user" };
+      }
+
+      const credential = EmailAuthProvider.credential(
+        user.email,
+        currentPassword
+      );
+      await reauthenticateWithCredential(user, credential);
+
+      await updatePassword(user, newPassword);
+
+      return { success: true, message: "Password updated" };
+    } catch (error) {
+      let errorMessage = "Password update failed";
+      switch (error.code) {
+        case "auth/wrong-password":
+          errorMessage = "Current password is incorrect";
+          break;
+        case "auth/requires-recent-login":
+          errorMessage = "Please log in again and try changing the password";
+          break;
+        default:
+          errorMessage = error.message;
+      }
+      return { success: false, error: errorMessage}
     }
   };
 
@@ -170,6 +206,7 @@ export function AuthProvider({ children }) {
     showToast,
     format,
     fallbackCopy,
+    changePassword,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

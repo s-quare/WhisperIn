@@ -165,6 +165,10 @@ const Login = () => {
             <p className="fw-bold f-10 text-secondary">
               Passwords are case sensitive
             </p>
+            
+            <p className="fw-bold f-10 text-secondary">
+              Forgot password? Try <span onClick={()=>navigate('/reset')} className="text-primary cursor">reset</span>
+            </p>
 
             <button
               className="w-100 max-400 d-block mx-auto bg-snow mt-5 mb-4"

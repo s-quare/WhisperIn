@@ -4,7 +4,7 @@ import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCWGPdzGPJA-Io4GmMIw5BhWMNklAfi7Tg",
-  authDomain: "whisperin-40ea4.firebaseapp.com",
+  authDomain: "whisperin.gt.tc",
   projectId: "whisperin-40ea4",
   storageBucket: "whisperin-40ea4.firebasestorage.app",
   messagingSenderId: "654270153084",

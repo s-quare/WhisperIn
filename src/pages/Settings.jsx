@@ -306,6 +306,11 @@ const Settings = () => {
             </button>
 
             <p className="mb-1 mt-4 pt-3 fw-bold">Account action</p>
+            <br />
+
+            <button className="bg-secondary d-block mb-4" onClick={()=>navigate('/change-password')}>Change password</button>
+
+
             <button
               onClick={() =>
                 confirm(
