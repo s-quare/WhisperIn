@@ -1,0 +1,17 @@
+#root {
+  max-width: 800px;
+  margin: 0 auto;
+   color: rgba(255, 255, 255, 0.87);
+  background-color: #020110;
+}
+
+.MessagesParent {
+  .MessageParentChild {
+    margin: 5px 0;
+    &:hover {
+      transform: scale(1.01);
+      margin: 7.5px 0;
+      box-shadow: 0 0 10px rgba(124, 104, 238, 0.2);
+    }
+  }
+}
