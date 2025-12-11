@@ -162,7 +162,9 @@ const Dashboard = () => {
     return (
       <div className="p-4">
         <div className="d-flex pb-4 mt-2 fs-2 justify-content-between">
-          <p className="f-14 fw-bolder">Whisper<span className="text-snow">In</span></p>
+          <p className="f-14 fw-bolder">
+            Whisper<span className="text-snow">In</span>
+          </p>
           <span className="d-flex gap-3">
             <i
               onClick={() => navigate("/")}
@@ -177,10 +179,10 @@ const Dashboard = () => {
 
         <p className="fw-bold mb-1 f-14">
           Welcome back,{" "}
-          <span className="text-secondary monospace">
-            {userData?.whisperId && "#"}
-            {userData?.name || userData?.whisperId || ""}
-          </span>{" "}
+          {userData?.username
+            ? `@${userData?.username}`
+            : `#${userData?.whisperId}`}
+          .
         </p>
 
         <div className="py-4">
@@ -357,7 +359,10 @@ const Dashboard = () => {
               placeItems: "center",
             }}
           >
-            <div className="TargetCapture w-100 max-600 p-5 ">
+            <div
+              style={{ minHeight: "80%", placeItems: "center" }}
+              className="TargetCapture w-100 d-grid max-600 p-5 "
+            >
               <div
                 className="p-4 rounded-4 max-500"
                 style={{
@@ -370,7 +375,7 @@ const Dashboard = () => {
                   onClick={() => setModalShowing(false)}
                   className="d-block mb-4 ps-2 f-10 text-secondary fw-bold cursor italics"
                 >
-                  back to messages
+                  <i className="fa-solid fa-angle-left"></i> return
                 </span>
                 <p className="fw-bolder mt-3 mb-0">
                   Whisper<span className="text-snow">In</span>
@@ -392,15 +397,18 @@ const Dashboard = () => {
                 <p className="my-5" style={{ whiteSpace: "pre-wrap" }}>
                   {modalShowing.text}
                 </p>
-                <div className="d-flex gap-3 f-10 fw-bolder text-secondary">
+                <div className="d-flex gap-3 f-12 fw-bolder text-secondary">
                   <span
-                    className="cursor"
+                    className="cursor text-snow"
                     onClick={() => handleCopy(modalShowing.text)}
                   >
-                    Copy text
+                    <i className="fa-solid fa-copy"></i>
                   </span>
-                  <span className="cursor" onClick={() => captureMessage()}>
-                    Capture
+                  <span
+                    className="cursor text-white"
+                    onClick={() => captureMessage()}
+                  >
+                    <i className="fa-solid fa-camera"></i>
                   </span>
                   <span
                     className="text-danger cursor"
@@ -409,7 +417,7 @@ const Dashboard = () => {
                       handleDeleteMessage(modalShowing.id)
                     }
                   >
-                    Delete
+                    <i className="fa-solid fa-trash"></i>
                   </span>
                 </div>
               </div>
