@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://whisperin.gt.tc/sitemap.xml
