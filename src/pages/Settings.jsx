@@ -13,16 +13,29 @@ import {
   where,
 } from "firebase/firestore";
 import { auth, db } from "../lib/firebase";
-import { deleteUser } from "firebase/auth";
+import {
+  deleteUser,
+  reauthenticateWithCredential,
+  EmailAuthProvider,
+} from "firebase/auth";
 
 const Settings = () => {
   const navigate = useNavigate();
-  const { user, userData, loading, showToast, logout, fallbackCopy } =
-    useAuth();
+  const {
+    user,
+    userData,
+    loading,
+    showToast,
+    logout,
+    fallbackCopy,
+  } = useAuth();
   const [username, setUsername] = useState("");
   const [editingUsername, setEditingUsername] = useState(false);
   const [bio, setBio] = useState("");
   const [editingBio, setEditingBio] = useState(false);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [password, setPassword] = useState("");
+  const [pageLoading, setPageLoading] = useState(false);
 
   useEffect(() => {
     if (!loading && !user) {
@@ -125,7 +138,8 @@ const Settings = () => {
     }
   };
 
-  const deleteAccount = async () => {
+  const deleteAccount = async (password) => {
+    setPageLoading(true);
     try {
       const currentUser = auth.currentUser;
 
@@ -134,29 +148,50 @@ const Settings = () => {
         return;
       }
 
+      //reauth
+      const credential = EmailAuthProvider.credential(
+        currentUser.email,
+        password
+      );
+      await reauthenticateWithCredential(currentUser, credential);
+
+      // delete msgs
       const messagesRef = collection(db, "messages");
       const messageQuery = query(
         messagesRef,
-        where("targetUserId", "==", user.uid)
+        where("targetUserId", "==", currentUser.uid)
       );
       const messageSnapshot = await getDocs(messageQuery);
       const messageDeletes = messageSnapshot.docs.map((doc) =>
         deleteDoc(doc.ref)
       );
-
       await Promise.all(messageDeletes);
 
+      // del user in store
       await deleteDoc(doc(db, "users", currentUser.uid));
 
+      // del user auth
       await deleteUser(currentUser);
 
       await logout();
-      
+
       showToast("Account deleted");
       navigate("/");
-    } catch {
-      showToast("Error completing action");
+    } catch (error) {
+      console.error(error);
+      if (error.code === "auth/requires-recent-login") {
+        showToast("Please log out and log back in to delete your account.");
+      } else {
+        showToast("Error deleting account. Check your network or password.");
+      }
+    } finally {
+      setPageLoading(false);
     }
+  };
+
+  const cancelDelete = () => {
+    setPassword("");
+    setConfirmDelete(false);
   };
 
   if (!user) return <></>;
@@ -308,19 +343,45 @@ const Settings = () => {
             <p className="mb-1 mt-4 pt-3 fw-bold">Account action</p>
             <br />
 
-            <button className="bg-secondary d-block mb-4" onClick={()=>navigate('/change-password')}>Change password</button>
-
-
             <button
-              onClick={() =>
-                confirm(
-                  "PERMANENTLY delete your account and ALL data? This action cannot be undone."
-                ) && deleteAccount()
-              }
-              className="bg-danger f-12 px-5"
+              className="bg-secondary d-block mb-4"
+              onClick={() => navigate("/change-password")}
             >
-              Delete Account
+              Change password
             </button>
+
+            {!confirmDelete && (
+              <button
+                onClick={() => setConfirmDelete(true)}
+                className="bg-secondary fw-bold px-5"
+              >
+                Delete Account
+              </button>
+            )}
+
+            {confirmDelete && (
+              <div>
+                <p className="fw-bold">
+                  Enter your password to delete account{" "}
+                  <span onClick={cancelDelete} className="text-snow">
+                    Cancel
+                  </span>
+                </p>
+                <input
+                  type="password"
+                  className="d-block"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <button
+                  onClick={() => deleteAccount(password)}
+                  className="bg-danger mt-3 f-12 px-5"
+                  disabled={password.length === 0 || pageLoading}
+                >
+                  {pageLoading ? "Wait.." : "Delete Account"}
+                </button>
+              </div>
+            )}
           </div>
 
           <p className="mt-5 mb-0 pt-4 fw-bold text-center">

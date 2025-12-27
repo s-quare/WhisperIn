@@ -95,10 +95,11 @@ const Home = () => {
         </div>
 
         <div
-          className={`gap-2 px-2 pb-2 max-350 mx-auto`}
+          className={`pb-2 max-350 mx-auto`}
           style={{
+            gap: '5%',
             display: showInput ? "grid" : "none",
-            gridTemplateColumns: "1fr auto",
+            gridTemplateColumns: "75% 20%",
           }}
         >
           <input
@@ -109,7 +110,7 @@ const Home = () => {
           />
           <button
             onClick={handleSearchSubmit}
-            className="btn-snow px-4"
+            className="btn-snow px-3"
             disabled={searchInput === ""}
           >
             Go

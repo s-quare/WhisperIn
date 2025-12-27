@@ -192,7 +192,7 @@ export function AuthProvider({ children }) {
         default:
           errorMessage = error.message;
       }
-      return { success: false, error: errorMessage}
+      return { success: false, error: errorMessage };
     }
   };
 
@@ -203,6 +203,7 @@ export function AuthProvider({ children }) {
     login,
     logout,
     loading,
+    setLoading,
     showToast,
     format,
     fallbackCopy,
